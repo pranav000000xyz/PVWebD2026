@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML5 APIs Practical</title>
+    <style>
+        #drag1 {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+
+        #drop {
+            width: 200px;
+            height: 200px;
+            border: 2px dashed black;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>1. Drag and Drop</h2>
+<div id="drag1" draggable="true" ondragstart="drag(event)"></div>
+
+<div id="drop" ondrop="drop(event)" ondragover="allowDrop(event)">
+    Drop here
+</div>
+
+<hr>
+
+<h2>2. Geolocation</h2>
+<button onclick="getLocation()">Get Location</button>
+<p id="location"></p>
+
+<hr>
+
+<h2>3. Web Storage</h2>
+<input type="text" id="dataInput" placeholder="Enter something">
+<button onclick="saveData()">Save</button>
+<button onclick="loadData()">Load</button>
+<p id="result"></p>
+
+<script>
+// Drag & Drop
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}
+
+// Geolocation
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            document.getElementById("location").innerHTML =
+            "Latitude: " + position.coords.latitude +
+            "<br>Longitude: " + position.coords.longitude;
+        });
+    } else {
+        alert("Geolocation not supported");
+    }
+}
+
+// Web Storage
+function saveData() {
+    let data = document.getElementById("dataInput").value;
+    localStorage.setItem("myData", data);
+}
+
+function loadData() {
+    let data = localStorage.getItem("myData");
+    document.getElementById("result").innerText = data;
+}
+</script>
+
+</body>
+</html>
